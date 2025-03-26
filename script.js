@@ -1,4 +1,27 @@
-// फेक न्यूज़ अपडेट (API से जोड़ सकते हैं)
+ const apiKey = "YOUR_NEWS_API_KEY"; // c4a227022ec1420f88352cf2664548c1
+const newsList = document.getElementById("news-list");
+
+async function fetchNews() {
+    try {
+        const response = await fetch(`https://newsapi.org/v2/top-headlines?country=in&apiKey=${apiKey}`);
+        const data = await response.json();
+
+        newsList.innerHTML = ""; // पहले की न्यूज़ हटाएं
+
+        data.articles.forEach(article => {
+            let li = document.createElement("li");
+            li.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
+            newsList.appendChild(li);
+        });
+    } catch (error) {
+        newsList.innerHTML = "<li>⚠ न्यूज़ लोड करने में समस्या हो रही है।</li>";
+    }
+}
+
+// हर 10 सेकंड में न्यूज़ अपडेट करें
+fetchNews();
+setInterval(fetchNews, 10000);
+
 const newsList = document.getElementById("news-list");
 const newsData = [
     "🚀 चंद्रयान-4 की तैयारी शुरू!",
